@@ -180,7 +180,9 @@
                     >
                 </th>
                 <th class="py-2 px-4"></th>
-                <th class="py-2 px-4"></th>
+                <th class="py-2 px-4 text-right">
+                    <button onclick="limpiarFiltros()" class="text-blue-600 hover:underline text-sm">Limpiar filtros</button>
+                </th>
             </tr>
         </thead>
         <tbody id="turnos-list">
@@ -197,7 +199,7 @@
                     <td class="py-3 px-4 text-center space-x-2">
                         <div class="flex space-x-0.5 justify-center">
                             <button 
-                                onclick="openModal({{ $turno->id }}, '{{ $turno->profesor }}', '{{ $turno->carrera }}', '{{ $turno->email }}', '{{ $turno->entrada }}', '{{ $turno->salida }}', '{{ $turno->fecha }}')" 
+                                onclick="openModal({{ $turno->id }},'{{ $turno->nro_turno }}', '{{ $turno->profesor }}', '{{ $turno->carrera }}', '{{ $turno->email }}', '{{ $turno->entrada }}', '{{ $turno->salida }}', '{{ $turno->fecha }}','{{ $turno->sala_informatica_id }}')" 
                                 class="text-gray-500 hover:text-yellow-500 w-8 h-8 flex items-center justify-center">
                                 <i class="ri-edit-line"></i>
                             </button>
@@ -321,7 +323,7 @@
         </form>
     </div>
 </div>
-
+<!-- JavaScript -->
 <script>
     // Al cargar la página, ponemos la fecha actual en el filtro
     document.addEventListener('DOMContentLoaded', function () {
@@ -356,18 +358,20 @@
             }
         });
     }
-</script>
 
-<!-- JavaScript -->
+ function limpiarFiltros() {
+        document.getElementById('filter-profesor').value = '';
+        document.getElementById('filter-fecha').value = '';
+        filtrarTabla();
+    }
+</script>
 <script>
     function abrirModal(id, email) {
         const modal = document.getElementById('modalEnvio');
         const correoDestino = document.getElementById('correoDestino');
         const form = document.getElementById('formEnvio');
-
         correoDestino.textContent = email;
         form.action = `/turnos/enviar/${id}`; // Asumimos ruta tipo POST /turnos/enviar/{id}
-
         modal.classList.remove('hidden');
     }
 
@@ -405,9 +409,6 @@
         document.getElementById('editModal').classList.add('hidden');
         document.getElementById('editModal').classList.remove('flex');
     }
-
-
-
   // Cerrar modal con click fuera del contenido
         window.addEventListener('click', function(event) {
             const modal = document.getElementById('editModal');
@@ -421,28 +422,14 @@
         const alertBox = document.getElementById('alert-success');
         if(alertBox) {
             setTimeout(() => {
-                // Opcional: animación de desvanecimiento suave
+                
                 alertBox.style.transition = "opacity 0.5s ease";
                 alertBox.style.opacity = '0';
 
-                // Después de la transición, lo quitamos del DOM
+                
                 setTimeout(() => alertBox.remove(), 500);
-            }, 3000); // Cambia 3000 por la cantidad de ms que quieras que dure visible
+            }, 3000); 
         }
     });
 </script> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </x-app-layout>
